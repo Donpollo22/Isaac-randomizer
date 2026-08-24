@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Binding of Isaac - Random Character Selector</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="room-container">
+        <!-- Upper Zone: Character Display -->
+        <div class="character-zone">
+            <div id="character-display" class="character-display hidden">
+                <div id="character-name" class="character-name"></div>
+                <img id="character-image" class="character-image" src="" alt="Character">
+            </div>
+            <div id="empty-state" class="empty-state">
+                <div class="empty-room-hint"></div>
+            </div>
+        </div>
+
+        <!-- Lower Zone: Selection Panel -->
+        <div class="selection-panel">
+            <div class="panel-content">
+                <h2 class="panel-title">CHARACTER SELECTION</h2>
+                
+                <div class="filter-section">
+                    <label class="filter-label">CHARACTERS</label>
+                    <div class="filter-selector">
+                        <button id="filter-prev" class="filter-arrow">◀</button>
+                        <span id="filter-value" class="filter-value">ALL</span>
+                        <button id="filter-next" class="filter-arrow">▶</button>
+                    </div>
+                </div>
+
+                <button id="random-btn" class="random-btn">RANDOM CHARACTER</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
