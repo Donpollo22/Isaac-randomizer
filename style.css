@@ -1,0 +1,423 @@
+/* ============================================
+   THE BINDING OF ISAAC - RANDOM CHARACTER SELECTOR
+   Style inspired by Isaac character selection screen
+   ============================================ */
+
+/* --- CSS Reset & Base --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #1a1a1a;
+    color: #d4c5a3;
+    min-height: 100vh;
+    overflow: hidden;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+/* --- Room Container --- */
+.room-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: linear-gradient(180deg, #2a2a2a 0%, #1f1f1f 100%);
+    position: relative;
+}
+
+/* Add subtle dungeon texture overlay */
+.room-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.1) 2px,
+            rgba(0, 0, 0, 0.1) 4px
+        );
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+/* --- Character Zone (Upper) --- */
+.character-zone {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 20px;
+}
+
+.character-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeInScale 0.3s ease-out;
+}
+
+.character-display.hidden {
+    display: none;
+}
+
+.character-name {
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #e8dcc5;
+    text-shadow: 
+        2px 2px 0px #000,
+        -1px -1px 0px #000,
+        1px -1px 0px #000,
+        -1px 1px 0px #000;
+    margin-bottom: 20px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.character-image {
+    max-width: 200px;
+    max-height: 200px;
+    width: auto;
+    height: auto;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.6));
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.empty-room-hint {
+    width: 100px;
+    height: 100px;
+    border: 3px dashed rgba(212, 197, 163, 0.2);
+    border-radius: 50%;
+    opacity: 0.3;
+}
+
+/* --- Selection Panel (Lower) --- */
+.selection-panel {
+    background: linear-gradient(180deg, #3d3628 0%, #2d2618 100%);
+    border-top: 4px solid #1a1a1a;
+    padding: 20px;
+    position: relative;
+    box-shadow: 
+        0 -4px 20px rgba(0, 0, 0, 0.5),
+        inset 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+/* Parchment texture effect */
+.selection-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.panel-content {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.panel-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    color: #d4c5a3;
+    text-shadow: 2px 2px 0px #000;
+    text-transform: uppercase;
+    border-bottom: 2px solid rgba(212, 197, 163, 0.3);
+    padding-bottom: 8px;
+}
+
+/* --- Filter Section --- */
+.filter-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-label {
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    color: #b8a88a;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0px #000;
+}
+
+.filter-selector {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 20px;
+    border-radius: 4px;
+    border: 2px solid rgba(212, 197, 163, 0.2);
+}
+
+.filter-arrow {
+    background: linear-gradient(180deg, #4a4a4a 0%, #2a2a2a 100%);
+    border: 2px solid #5a5a5a;
+    color: #d4c5a3;
+    font-size: 1rem;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.1s ease;
+    font-family: 'Courier New', Courier, monospace;
+    text-shadow: 1px 1px 0px #000;
+}
+
+.filter-arrow:hover {
+    background: linear-gradient(180deg, #5a5a5a 0%, #3a3a3a 100%);
+    border-color: #6a6a6a;
+}
+
+.filter-arrow:active {
+    transform: scale(0.95);
+    background: linear-gradient(180deg, #3a3a3a 0%, #1a1a1a 100%);
+}
+
+.filter-value {
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #e8dcc5;
+    min-width: 80px;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0px #000;
+}
+
+/* --- Random Character Button --- */
+.random-btn {
+    background: linear-gradient(180deg, #5a4a3a 0%, #3a2a1a 100%);
+    border: 3px solid #6a5a4a;
+    color: #e8dcc5;
+    font-size: 1.3rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    padding: 15px 40px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.1s ease;
+    font-family: 'Courier New', Courier, monospace;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0px #000;
+    box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.4),
+        inset 0 2px 4px rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.random-btn:hover {
+    background: linear-gradient(180deg, #6a5a4a 0%, #4a3a2a 100%);
+    border-color: #7a6a5a;
+    box-shadow: 
+        0 6px 12px rgba(0, 0, 0, 0.5),
+        inset 0 2px 4px rgba(255, 255, 255, 0.15);
+}
+
+.random-btn:active {
+    transform: translateY(2px);
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.3),
+        inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Button press effect overlay */
+.random-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.random-btn:hover::after {
+    opacity: 1;
+}
+
+/* --- Animations --- */
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes nameFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .character-name {
+        font-size: 1.5rem;
+        letter-spacing: 3px;
+    }
+
+    .character-image {
+        max-width: 150px;
+        max-height: 150px;
+    }
+
+    .panel-title {
+        font-size: 1rem;
+    }
+
+    .random-btn {
+        font-size: 1.1rem;
+        padding: 12px 30px;
+    }
+
+    .filter-selector {
+        padding: 6px 15px;
+    }
+
+    .filter-arrow {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
+
+    .filter-value {
+        min-width: 70px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .character-name {
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+        margin-bottom: 15px;
+    }
+
+    .character-image {
+        max-width: 120px;
+        max-height: 120px;
+    }
+
+    .selection-panel {
+        padding: 15px;
+    }
+
+    .panel-title {
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+    }
+
+    .random-btn {
+        font-size: 1rem;
+        padding: 10px 25px;
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .filter-label {
+        font-size: 0.8rem;
+    }
+
+    .filter-selector {
+        padding: 5px 12px;
+        gap: 10px;
+    }
+
+    .filter-arrow {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+
+    .filter-value {
+        min-width: 60px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Landscape mobile optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+    .room-container {
+        height: 100vh;
+    }
+
+    .character-zone {
+        flex: 1.2;
+        padding: 10px;
+    }
+
+    .character-image {
+        max-width: 100px;
+        max-height: 100px;
+    }
+
+    .selection-panel {
+        flex: 0.8;
+        padding: 10px;
+    }
+
+    .panel-content {
+        gap: 12px;
+    }
+
+    .panel-title {
+        font-size: 0.8rem;
+    }
+
+    .random-btn {
+        font-size: 0.9rem;
+        padding: 8px 20px;
+    }
+}
